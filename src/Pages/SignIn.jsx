@@ -24,7 +24,7 @@ export default class Register extends React.Component {
             password: '',
             emailvalid: '',
             passwordvalid: '',
-            data: [],
+            userdata: [],
         }
     }
     SnackbarClose = (event) => {
@@ -76,14 +76,19 @@ export default class Register extends React.Component {
             };
             console.log("data", data);
             const url = '';
-            service.userLogin(url, data).then((response) =>
-             //   console.log("user data", response),
-               localStorage.setItem("token",response.data.jsonToken),
-                this.props.history.push({
-                    pathname: "/dashboard",
-                    // customNameData:response
-                })
-            )
+            service.userLogin(url, data)
+            .then((response) =>{
+                console.log("user data", response);
+                localStorage.setItem("token",response.data.jsonToken);
+                localStorage.setItem('profile', response.data.data.profile);
+                localStorage.setItem('firstName', response.data.data.firstName);
+                localStorage.setItem("lastName", response.data.data.lastName);  
+                localStorage.setItem('id', response.data.data.id);
+                 this.props.history.push({
+                     pathname: "/dashboard",
+                      customNameData:response.data.data
+                 })
+            })
                 .catch(
                     err => console.log(err),
                 );
